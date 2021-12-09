@@ -1,10 +1,14 @@
 
-export default function GameColumn({colNum, height, addChip}) {
+export default function GameColumn({colNum, numRows, height, chips, addChip}) {
+  const P1_COLOR = 'red'
+  const P2_COLOR = 'yellow'
 
   let cells = []
-  for (let i=0; i < 7; i++) {
+  for (let i=(numRows - 1); i >= 0; i--) {
+    let cellState = chips[i]
+    let cellColor = (cellState === '1') ? P1_COLOR : (cellState === '2') ? P2_COLOR : ''
     cells.push((
-      <div className='game-cell' key={i}>{i}, {height}</div>
+      <div className={`game-cell ${cellColor}`} key={i}>{i}</div> 
     ));
   }
 

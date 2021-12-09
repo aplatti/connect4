@@ -20,13 +20,12 @@ export default function Game() {
     } else {
       console.log('Already filled this column')
     }
-
   }
 
   return (
     <div className='game'>
-      {grid && grid.map((el, i) => {
-        return <GameColumn key={i} colNum={i} height={ROWS} addChip={addChip}/>
+      {grid && grid.map((colArr, i) => {
+        return <GameColumn key={i} colNum={i} numRows={ROWS} chips={colArr} height={ROWS} addChip={addChip}/>
       })}
 
       <div className='game-turn'>
