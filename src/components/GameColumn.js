@@ -1,5 +1,5 @@
 
-export default function GameColumn({num, height}) {
+export default function GameColumn({num, height, addChip}) {
 
   let cells = []
   for (let i=0; i < 7; i++) {
@@ -8,8 +8,12 @@ export default function GameColumn({num, height}) {
     ));
   }
 
+  const handleClick = () => {
+    addChip(num)
+  }
+
   return (
-    <div className="game-column">
+    <div className="game-column" onClick={handleClick}>
       {cells}
     </div>
 
