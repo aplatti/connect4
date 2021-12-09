@@ -24,13 +24,44 @@ export default function Game() {
   }
 
   
+
+  
   useEffect(() => {
-    const hasRowWin = () => {
+
+    const hasDescendingDiagonalWin = (grid) => {
+      let clone = JSON.parse(JSON.stringify(grid))
+      for (let colNum = 0; colNum < clone.length; colNum++) {
+        let col = clone[colNum]
+        let unshifts = 0;
+        for (; unshifts < colNum; unshifts++) {
+          col.unshift(null)
+        }
+      }
+      printGrid(clone)
+      return hasRowWin(clone)
+    }
+
+    const hasAscendingDiagonalWin = (grid) => {
+      let clone = JSON.parse(JSON.stringify(grid))
+
+      for (let colNum = 0; colNum < clone.length; colNum++) {
+        let col = clone[colNum]
+        let unshifts = clone.length - (colNum + 1);
+        for (; unshifts > 0; unshifts--) {
+          col.unshift(null)
+        }
+      }
+      // printGrid(clone)
+      return hasRowWin(clone)
+    }
+
+    const hasRowWin = (grid) => {
       let player, streak, cellVal
-      for (let row = 0; row < ROWS; row++) {
+      let maxLength = getMaxColumnLength(grid)
+      for (let row = 0; row < maxLength; row++) {
         player = null
         streak = 0
-        for(let col = 0; col < COLS; col++) {
+        for(let col = 0; col < grid.length; col++) {
           cellVal = grid[col][row]
 
           if (player && player === cellVal) {
@@ -47,12 +78,28 @@ export default function Game() {
       } // row loop
     }
 
-    const hasColWin = () => {
+    const printGrid = (grid) => {
+      let cellVal
+      let maxLength = getMaxColumnLength(grid)
+      let pic = ''
+      for (let row = maxLength -1;  row >= 0; row--) {
+        for(let col = 0; col < grid.length; col++) {
+          cellVal = grid[col][row]
+          pic += cellVal || '_'
+        }  // col loop
+        pic += '\n'
+      } // row loop
+      console.log(pic)
+    }
+
+    const hasColWin = (grid) => {
       let player, streak, cellVal
-      for(let col = 0; col < COLS; col++) {
+      let maxLength = getMaxColumnLength(grid)
+      for(let col = 0; col < grid.length; col++) {
         player = null
         streak = 0
-        for (let row = 0; row < ROWS; row++) {
+
+        for (let row = 0; row < maxLength; row++) {
           cellVal = grid[col][row]
 
           if (player && player === cellVal) {
@@ -67,10 +114,18 @@ export default function Game() {
           }
         }  // col loop
       } // row loop
+    }
+
+    const getMaxColumnLength = (grid) => {
+      let maxLength = 0;
+      for (let i=0; i < grid.length; i++) {
+        maxLength = Math.max(maxLength, grid[i].length) 
+      }
+      return maxLength;
     }
 
     console.log('useEffect for Grid called')
-    if (hasRowWin() || hasColWin()) {
+    if (hasRowWin(grid) || hasColWin(grid) || hasDescendingDiagonalWin(grid) || hasAscendingDiagonalWin(grid)){
       setHasWinner(true)
     }
   }, [grid])
@@ -89,7 +144,6 @@ export default function Game() {
         {grid && grid.map((colArr, i) => {
           return <GameColumn key={i} colNum={i} numRows={ROWS} chips={colArr} height={ROWS} addChip={addChip}/>
         })}
-
       </div>
     </>
   )
