@@ -4,22 +4,29 @@ import GameColumn from './GameColumn'
 import './Game.css'
 
 export default function Game() {
-
-  const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true)
-
   const ROWS = 6
   const COLS = 7
 
-  let grid = Array.from(Array(COLS), () => new Array(ROWS))
+  const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true)
+  const [grid, setGrid] = useState(Array.from(Array(COLS), () => []))
 
   const addChip = (column) => {
-    console.log('add chip to column ' + column)
+
+    if (grid[column].length < ROWS) {
+      grid[column].push(isPlayerOneTurn ? '1' : '2')
+      setIsPlayerOneTurn((state) => !state)
+      console.log('added chip to column ' + column)
+      console.log(grid)
+    } else {
+      console.log('Already filled this column')
+    }
+
   }
 
   return (
     <div className='game'>
-      {grid.map((el, i) => {
-        return <GameColumn num={i} height={ROWS} addChip={addChip}/>
+      {grid && grid.map((el, i) => {
+        return <GameColumn key={i} colNum={i} height={ROWS} addChip={addChip}/>
       })}
 
       <div className='game-turn'>
