@@ -7,10 +7,13 @@ export default function Game() {
   const ROWS = 6
   const COLS = 7
 
+  const [hasWinner, setHasWinner] = useState(false)
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true)
   const [grid, setGrid] = useState(Array.from(Array(COLS), () => []))
 
   const addChip = (column) => {
+    if (hasWinner) return
+
     if (grid[column].length < ROWS) {
       grid[column].push(isPlayerOneTurn ? '1' : '2')
       setGrid([...grid])
@@ -19,8 +22,6 @@ export default function Game() {
       console.log('Already filled this column')
     }
   }
-
-
 
   
   useEffect(() => {
@@ -46,9 +47,31 @@ export default function Game() {
       } // row loop
     }
 
+    const hasColWin = () => {
+      let player, streak, cellVal
+      for(let col = 0; col < COLS; col++) {
+        player = null
+        streak = 0
+        for (let row = 0; row < ROWS; row++) {
+          cellVal = grid[col][row]
+
+          if (player && player === cellVal) {
+            streak++
+          } else {
+            player = cellVal
+            streak = 1
+          }
+
+          if (streak === 4) {
+            return true
+          }
+        }  // col loop
+      } // row loop
+    }
+
     console.log('useEffect for Grid called')
-    if (hasRowWin()) {
-      console.log('WINNER!')
+    if (hasRowWin() || hasColWin()) {
+      setHasWinner(true)
     }
   }, [grid])
 
@@ -61,7 +84,11 @@ export default function Game() {
       })}
 
       <div className='game-turn'>
-        It's {isPlayerOneTurn ? <span className="red">Red</span> : <span className="yellow">Yellow</span>}'s Turn!
+        {hasWinner && <p>We have a WINNER!!!</p>}
+        {!hasWinner && 
+          <p>It's {isPlayerOneTurn ? <span className="red">Red</span> : <span className="yellow">Yellow</span>}'s Turn!</p>
+        }
+
       </div>
     </div>
   )
