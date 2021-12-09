@@ -78,18 +78,19 @@ export default function Game() {
 
 
   return (
-    <div className='game'>
-      {grid && grid.map((colArr, i) => {
-        return <GameColumn key={i} colNum={i} numRows={ROWS} chips={colArr} height={ROWS} addChip={addChip}/>
-      })}
-
-      <div className='game-turn'>
+    <>
+      <div className='game-status'>
         {hasWinner && <p>We have a WINNER!!!</p>}
         {!hasWinner && 
-          <p>It's {isPlayerOneTurn ? <span className="red">Red</span> : <span className="yellow">Yellow</span>}'s Turn!</p>
+          <p>{isPlayerOneTurn ? <span className="red">Red</span> : <span className="yellow">Yellow</span>}'s Turn!</p>
         }
+      </div>
+      <div className='game'>
+        {grid && grid.map((colArr, i) => {
+          return <GameColumn key={i} colNum={i} numRows={ROWS} chips={colArr} height={ROWS} addChip={addChip}/>
+        })}
 
       </div>
-    </div>
+    </>
   )
 }

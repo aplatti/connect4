@@ -25,3 +25,9 @@
 .game-cell.red {
   background-color: red;
 }
+
+
+.game-status p{
+  font-size: 30px;
+  margin-bottom: 0
+}
