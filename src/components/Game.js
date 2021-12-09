@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import GameColumn from './GameColumn'
 
 import './Game.css'
@@ -10,13 +10,16 @@ export default function Game() {
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true)
   const [grid, setGrid] = useState(Array.from(Array(COLS), () => []))
 
-  const addChip = (column) => {
+  
+  useEffect(() => {
+    console.log('useEffect for Grid called')
+  }, [grid])
 
+  const addChip = (column) => {
     if (grid[column].length < ROWS) {
       grid[column].push(isPlayerOneTurn ? '1' : '2')
+      setGrid([...grid])
       setIsPlayerOneTurn((state) => !state)
-      console.log('added chip to column ' + column)
-      console.log(grid)
     } else {
       console.log('Already filled this column')
     }

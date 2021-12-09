@@ -1,6 +1,7 @@
 .game {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 120px);
+  padding: 20px;
 }
 
 .game-column {
@@ -13,7 +14,7 @@
   height: 100px;
   background-color: #fff;
   border-radius: 50%;
-  margin: 10px;
+  margin: 10px 0;
 }
 
 .game-cell.yellow {
