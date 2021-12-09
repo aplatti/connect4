@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(7, 120px);
   padding: 20px;
+  justify-content: center;
 }
 
 .game-column {
