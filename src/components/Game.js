@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import GameColumn from './GameColumn'
+
+import './Game.css'
 
 export default function Game() {
 
@@ -8,7 +11,7 @@ export default function Game() {
   let grid = Array.from(Array(COLS), () => new Array(ROWS))
 
   return (
-    <div className='Game'>
+    <div className='game'>
       {grid.map((el, i) => {
         return <GameColumn num={i} height={ROWS} />
       })}
